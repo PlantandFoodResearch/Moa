@@ -37,8 +37,11 @@ def hook_defineCommandOptions(job, parser):
     parser.add_argument('--olx', default='', dest='openlavaExtra',
                         help='Extra arguments for bsub')
 
-    parser.add_argument('--oln', default=1, type=int, dest='openlavaProcs',
-                        help='The number of processors the jobs requires')
+    parser.add_argument('--olmin', type=int, dest='openlavaProcsMin',
+                        help='The minimum number of processors the job requires')
+                        
+    parser.add_argument('--olmax', type=int, dest='openlavaProcsMax',
+                        help='The maximum number of processors the job allows')
 
     parser.add_argument('--oldummy', default=False, dest='openlavaDummy',
                         action='store_true',
@@ -119,12 +122,16 @@ def openlavaRunner(wd, cl, conf={}, **kwargs):
     s("#BSUB -e %s" % errfile)
     s("#BSUB -q %s" % sysConf.args.openlavaQueue)
 
-    if '--oln' in sys.argv:
-        procs = sysConf.args.openlavaProcs
-    else:
-        procs = sysConf.job.conf.get('threads', sysConf.args.openlavaProcs)
-
-    s("#BSUB -C %d" % procs)
+    # Only specify '-n' if required
+    if '--olmin' in sys.argv:
+        minProcs = sysConf.args.openlavaProcsMin
+        # Max also set?
+        if '--olmax' in sys.argv:
+            maxProcs = sysConf.args.openlavaProcsMax
+            minMaxProcs = "%d,%d" % minProcs, maxProcs
+        else:
+            minMaxProcs = "%d" % minProcs
+        s("#BSUB -n %d" % minMaxProcs)
 
     if sysConf.args.openlavaExtra.strip():
         s("#BSUB %s" % sysConf.args.openlavaExtra)
