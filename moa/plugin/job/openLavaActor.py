@@ -250,10 +250,10 @@ OnSuccessScript = """#!/bin/bash
 #BSUB -m {{ args.openlavaHost }}
 {%- endif %}
 
-#BSUB -w '({%- for j in job.data.openlava.alljids -%}
+#BSUB -w '{%- for j in job.data.openlava.alljids -%}
 {%- if loop.index0 > 0 %}&&{% endif -%}
 done({{j}})
-{%- endfor -%})'
+{%- endfor -%}'
 cd {{ job.wd }}
 echo "Openlava OnSuccess Start"
 echo "Killing the OnError job"
@@ -272,11 +272,11 @@ OnErrorScript = """#!/bin/bash
 {% if args.openlavaHost -%}
 #BSUB -m {{ args.openlavaHost }}
 {%- endif %}
-#BSUB -w '({%- for j in job.data.openlava.alljids -%}
+#BSUB -w '{%- for j in job.data.openlava.alljids -%}
 {%- if loop.index0 > 0 %}||{% endif -%}
 exit({{j}},!=0)
 {%- endfor -%}
-)'
+'
 
 cd {{ job.wd }}
 echo "Openlava OnError Start"
