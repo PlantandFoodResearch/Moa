@@ -131,7 +131,7 @@ def openlavaRunner(wd, cl, conf={}, **kwargs):
             minMaxProcs = "%d,%d" % (minProcs, maxProcs)
         else:
             minMaxProcs = "%d" % minProcs
-        s("#BSUB -n %d" % minMaxProcs)
+        s("#BSUB -n %s" % minMaxProcs)
 
     if sysConf.args.openlavaExtra.strip():
         s("#BSUB %s" % sysConf.args.openlavaExtra)
