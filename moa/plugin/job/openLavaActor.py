@@ -128,7 +128,7 @@ def openlavaRunner(wd, cl, conf={}, **kwargs):
         # Max also set?
         if '--olmax' in sys.argv:
             maxProcs = sysConf.args.openlavaProcsMax
-            minMaxProcs = "%d,%d" % minProcs, maxProcs
+            minMaxProcs = "%d,%d" % (minProcs, maxProcs)
         else:
             minMaxProcs = "%d" % minProcs
         s("#BSUB -n %d" % minMaxProcs)
