@@ -28,7 +28,7 @@ l = moa.logger.getLogger(__name__)
 l.setLevel(moa.logger.DEBUG)
 
 
-ACTIVE = False
+ACTIVE = True
 
 
 def _exit_need_git_repo():
